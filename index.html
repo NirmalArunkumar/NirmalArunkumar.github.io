@@ -820,39 +820,171 @@
       text-transform: uppercase;
     }
 
-    /* Small projects grid */
-    .small-projects {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 24px;
-      margin-top: 48px;
+    /* ========================================================================
+   More Project Cards — expand on click
+   ======================================================================== */
+    .more-project-title-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: flex-start;
+      gap: 10px;
+      margin-bottom: 9px;
     }
 
-    .small-project {
-      padding: 28px;
+    .expand-icon {
+      font-size: 22px;
+      font-weight: 300;
+      color: var(--cyan);
+      transition: transform .3s;
+      line-height: 1;
+      flex-shrink: 0;
+      margin-top: 1px;
+    }
+
+    .more-project-card.expanded .expand-icon {
+      transform: rotate(45deg);
+    }
+
+    .more-project-details {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height .45s ease;
+      margin-top: 14px;
+    }
+
+    .more-project-details-inner {
+      border-left: 2px solid var(--cyan);
+      padding: 8px 0 4px 18px;
+      margin-bottom: 14px;
+    }
+
+    .more-project-details ul {
+      margin: 0;
+      padding: 0;
+      list-style: none;
+    }
+
+    .more-project-details li {
+      position: relative;
+      padding-left: 22px;
+      font-size: 14px;
+      color: var(--text-dim);
+      margin-bottom: 10px;
+      line-height: 1.55;
+    }
+
+    .more-project-details li::before {
+      content: "→";
+      position: absolute;
+      left: 0;
+      top: 0;
+      color: var(--cyan);
+      font-family: var(--font-mono);
+    }
+
+    .more-project-details li strong {
+      color: var(--text);
+      font-weight: 500;
+    }
+
+    /* ========================================================================
+   More Projects Grid
+   ======================================================================== */
+    .more-projects-header {
+      margin-top: 72px;
+      margin-bottom: 28px;
+      font-family: var(--font-mono);
+      font-size: 12px;
+      color: var(--cyan);
+      text-transform: uppercase;
+      letter-spacing: .18em;
+      display: flex;
+      align-items: center;
+      gap: 14px;
+    }
+
+    .more-projects-header::after {
+      content: "";
+      flex: 1;
+      height: 1px;
+      background: var(--border);
+    }
+
+    .more-projects-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(260px, 1fr));
+      gap: 20px;
+    }
+
+    .more-project-card {
       border: 1px solid var(--border);
       border-radius: var(--radius);
       background: var(--bg-elev-1);
-      transition: all .3s;
+      overflow: hidden;
+      transition: border-color .3s, box-shadow .3s;
+      cursor: pointer;
     }
 
-    .small-project:hover {
+    .more-project-card:hover {
       border-color: var(--cyan);
-      transform: translateY(-4px);
       box-shadow: 0 20px 50px -20px var(--glow-cyan);
     }
 
-    .small-project h4 {
-      font-size: 18px;
-      margin-bottom: 10px;
+    .more-project-thumb {
+      width: 100%;
+      height: 150px;
+      object-fit: cover;
+      display: block;
     }
 
-    .small-project p {
+    .more-project-thumb-placeholder {
+      width: 100%;
+      height: 80px;
+      background: linear-gradient(135deg, var(--bg-elev-2), rgba(59, 130, 246, 0.08));
+      border-bottom: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-family: var(--font-mono);
+      font-size: 11px;
+      color: var(--text-mute);
+      letter-spacing: .12em;
+      text-transform: uppercase;
+    }
+
+    .more-project-video-wrap {
+      position: relative;
+      width: 100%;
+      height: 185px;
+      background: #000;
+      overflow: hidden;
+      flex-shrink: 0;
+    }
+
+    .more-project-video-wrap iframe {
+      position: absolute;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      border: 0;
+      display: block;
+    }
+
+    .more-project-body {
+      padding: 22px 24px 24px;
+    }
+
+    .more-project-body h4 {
+      font-size: 17px;
+      margin-bottom: 0;
+    }
+
+    .more-project-body p {
       font-size: 14px;
       margin-bottom: 14px;
     }
 
-    .small-project .tags {
+    .more-project-body .tags {
       margin-bottom: 0;
     }
 
@@ -1082,7 +1214,7 @@
         grid-template-columns: 1fr;
       }
 
-      .small-projects {
+      .more-projects-grid {
         grid-template-columns: 1fr;
       }
 
@@ -1221,9 +1353,10 @@
         climate tech — click any card to open the technical deep dive.
       </p>
 
+      <!-- ===== FEATURED PROJECTS (top 3) ===== -->
       <div class="projects-wrap">
 
-        <!-- PROJECT A — Combat Robot -->
+        <!-- PROJECT 01 — Meltybrain -->
         <article class="project fade-up">
           <div class="project-grid">
             <div class="project-media">
@@ -1253,34 +1386,23 @@
               <div class="deepdive">
                 <div class="deepdive-inner">
                   <ul>
-                    <li><strong>Translational drift</strong> on ATmega32U4 using an H3LIS331DL ±400G accelerometer over
-                      I2C.</li>
-                    <li><strong>RPM estimation</strong> via centripetal formula with 2-point zero-G calibration and an
-                      EEPROM-persisted correction table with linear interpolation.</li>
-                    <li><strong>50 Hz PID throttle loop</strong> (Kp=0.3, Ki=0.2, Kd=0.1) chasing target RPM from the
-                      transmitter.</li>
-                    <li><strong>Dual-timer interrupt architecture:</strong> Timer3 hot loop @ 2000 Hz + Timer1 DShot @
-                      500 Hz.</li>
-                    <li><strong>Implemented D-Shot communication</strong>for faster communication than PWM by taking advantage of digital duty cycle </li>
-                    <li><strong>Safety:</strong> RC failsafe with 3 s stale-checksum timeout, hardware watchdog, 2-tier
-                      battery monitor.</li>
-                    <li><strong>Hardware: Designed 4-layer 2 oz copper PCB, 20 A continuous</strong>, thermal vias, 4S LiPo
-                      telemetry. Custom 3D-printed chassis.</li>
+                    <li><strong>Translational drift</strong> on ATmega32U4 using an H3LIS331DL ±400G accelerometer over I2C.</li>
+                    <li><strong>RPM estimation</strong> via centripetal formula with 2-point zero-G calibration and an EEPROM-persisted correction table with linear interpolation.</li>
+                    <li><strong>50 Hz PID throttle loop</strong> (Kp=0.3, Ki=0.2, Kd=0.1) chasing target RPM from the transmitter.</li>
+                    <li><strong>Dual-timer interrupt architecture:</strong> Timer3 hot loop @ 2000 Hz + Timer1 DShot @ 500 Hz.</li>
+                    <li><strong>Implemented D-Shot communication</strong> for faster communication than PWM by taking advantage of digital duty cycle.</li>
+                    <li><strong>Safety:</strong> RC failsafe with 3 s stale-checksum timeout, hardware watchdog, 2-tier battery monitor.</li>
+                    <li><strong>Hardware: Designed 4-layer 2 oz copper PCB, 20 A continuous</strong>, thermal vias, 4S LiPo telemetry. Custom 3D-printed chassis.</li>
                   </ul>
                 </div>
               </div>
               <div class="project-links">
                 <a class="project-link" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
                   GitHub
                 </a>
                 <a class="project-link" href="https://youtu.be/oLuCpsVDYDw?t=2401" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M23 7l-7 5 7 5V7zM14 5H3a2 2 0 00-2 2v10a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2z" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M23 7l-7 5 7 5V7zM14 5H3a2 2 0 00-2 2v10a2 2 0 002 2h11a2 2 0 002-2V7a2 2 0 00-2-2z"/></svg>
                   Arena Footage
                 </a>
               </div>
@@ -1288,7 +1410,7 @@
           </div>
         </article>
 
-        <!-- PROJECT B — 6-DOF Arm -->
+        <!-- PROJECT 02 — 6-DOF Arm -->
         <article class="project fade-up">
           <div class="project-grid">
             <div class="project-media">
@@ -1298,8 +1420,7 @@
             </div>
             <div class="project-body">
               <div class="project-index">PROJECT / 02</div>
-              <h3 class="project-title">6-DOF Robotic Arm — Kinematics, Closed-Loop Control &amp; Vision-Guided
-                Pick-and-Place</h3>
+              <h3 class="project-title">6-DOF Robotic Arm — Kinematics, Closed-Loop Control &amp; Vision-Guided Pick-and-Place</h3>
               <div class="tags">
                 <span class="tag">Embedded C++</span>
                 <span class="tag">IK / FK</span>
@@ -1309,10 +1430,9 @@
                 <span class="tag">Computer Vision</span>
               </div>
               <p class="project-summary">
-                Full-stack 6-DOF arm from scratch — DH parameter derivation, a
-                geometric inverse kinematics solver, closed-loop potentiometer
-                feedback, and a YOLOv8 vision pipeline that lets the arm pick up
-                cubes and drop them into a bowl autonomously.
+                Full-stack 6-DOF arm from scratch — DH parameter derivation, a geometric inverse kinematics solver,
+                closed-loop potentiometer feedback, and a YOLOv8 vision pipeline that lets the arm pick up cubes and
+                drop them into a bowl autonomously.
               </p>
               <button class="deepdive-toggle" onclick="toggleDeepdive(this)">
                 Technical Deep Dive <span class="chev">▼</span>
@@ -1320,26 +1440,18 @@
               <div class="deepdive">
                 <div class="deepdive-inner">
                   <ul>
-                    <li><strong>Geometric IK solver</strong> with ZYZ-Euler wrist decomposition, explicit singularity
-                      handling, and FK/IK dry-run verification.</li>
-                    <li><strong>4-joint potentiometer encoder feedback</strong> with a 2-phase closed-loop driver:
-                      open-loop ramp followed by encoder-nudge trim to a 2.5° tolerance.</li>
-                    <li><strong>Collision-avoidance retract → rotate → extend</strong> motion planner for large base
-                      moves.</li>
-                    <li><strong>YOLOv8n</strong> trained on a custom cube/bowl dataset; <strong>affine
-                        homography</strong> camera calibration maps pixels to workspace coordinates.</li>
+                    <li><strong>Geometric IK solver</strong> with ZYZ-Euler wrist decomposition, explicit singularity handling, and FK/IK dry-run verification.</li>
+                    <li><strong>4-joint potentiometer encoder feedback</strong> with a 2-phase closed-loop driver: open-loop ramp followed by encoder-nudge trim to a 2.5° tolerance.</li>
+                    <li><strong>Collision-avoidance retract → rotate → extend</strong> motion planner for large base moves.</li>
+                    <li><strong>YOLOv8n</strong> trained on a custom cube/bowl dataset; <strong>affine homography</strong> camera calibration maps pixels to workspace coordinates.</li>
                     <li><strong>10-step pick-and-place orchestrator</strong> tying vision → IK → servo commands.</li>
-                    <li><strong>Parallel STM32 UART path @ 115200 baud</strong> for future migration off the PCA9685.
-                    </li>
+                    <li><strong>Parallel STM32 UART path @ 115200 baud</strong> for future migration off the PCA9685.</li>
                   </ul>
                 </div>
               </div>
               <div class="project-links">
                 <a class="project-link" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
                   GitHub
                 </a>
               </div>
@@ -1347,135 +1459,29 @@
           </div>
         </article>
 
-        <!-- PROJECT C — BCI -->
+        <!-- PROJECT 03 — Intrinsic Challenge -->
         <article class="project fade-up">
           <div class="project-grid">
             <div class="project-media">
-              <iframe src="https://www.youtube.com/embed/d_SyuZcIaw0" title="SSVEP BCI Demo"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
+              <img src="assets/intrinsic_challenge.jpeg" alt="Intrinsic Challenge — Robotic Arm Simulation">
+              <div class="overlay"></div>
             </div>
             <div class="project-body">
               <div class="project-index">PROJECT / 03</div>
-              <h3 class="project-title">SSVEP Brain-Computer Interface — Neural Control of a Bionic Arm</h3>
+              <h3 class="project-title">Intrinsic Challenge — Sim-to-Real Robotic Arm Manipulation</h3>
               <div class="tags">
                 <span class="tag">Python</span>
-                <span class="tag">DSP</span>
-                <span class="tag">OpenBCI</span>
-                <span class="tag">CCA</span>
-                <span class="tag">MATLAB</span>
-                <span class="tag">Arduino</span>
-                <span class="tag">Biomedical</span>
-              </div>
-              <p class="project-summary">
-                End-to-end BCI system that reads steady-state visually-evoked
-                potentials from my occipital cortex and uses them to drive
-                individual fingers on a 5-servo bionic arm in real time.
-              </p>
-              <button class="deepdive-toggle" onclick="toggleDeepdive(this)">
-                Technical Deep Dive <span class="chev">▼</span>
-              </button>
-              <div class="deepdive">
-                <div class="deepdive-inner">
-                  <ul>
-                    <li><strong>SSVEP stimulus</strong> rendered in the browser at 7–15 Hz using
-                      <code>requestAnimationFrame</code>.</li>
-                    <li><strong>Signal pipeline:</strong> OpenBCI Cyton → BrainFlow → Python → MATLAB → Arduino Uno.
-                    </li>
-                    <li><strong>Classification:</strong> bandpass filtering → FFT → <em>Canonical Correlation
-                        Analysis</em> against reference sinusoids.</li>
-                    <li><strong>Spatial averaging</strong> across occipital electrodes to boost SNR against background
-                      EEG.</li>
-                    <li><strong>Actuation:</strong> Arduino Uno drives 5 independent servos, mapping classified
-                      frequencies to individual fingers.</li>
-                    <li>Built around a custom Ultracortex electrode placement for the occipital montage.</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="project-links">
-                <a class="project-link" href="https://youtu.be/d_SyuZcIaw0" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-                  </svg>
-                  Watch Demo
-                </a>
-                <a class="project-link" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z" />
-                  </svg>
-                  GitHub
-                </a>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- PROJECT D — DSP Internship -->
-        <article class="project fade-up">
-          <div class="project-grid">
-            <div class="project-media">
-              <img src="assets/DSP_lab.jpeg" alt="TI C6000 DSP lab setup">
-              <div class="overlay"></div>
-            </div>
-            <div class="project-body">
-              <div class="project-index">PROJECT / 04</div>
-              <h3 class="project-title">DSP Lab Internship — Real-Time Embedded Systems</h3>
-              <div class="tags">
-                <span class="tag">MATLAB / Simulink</span>
-                <span class="tag">TI C6000</span>
-                <span class="tag">DSP</span>
-                <span class="tag">Embedded Coder</span>
-              </div>
-              <p class="project-summary">
-                DSP Lab Intern at UofT ECE (May–Aug 2025). Built a MATLAB Simulink
-                → Code Composer Studio workflow for TI C6000 boards and developed
-                new lab modules on quantization and multi-rate DSP — cutting
-                student lab implementation time by roughly 50%.
-              </p>
-              <button class="deepdive-toggle" onclick="toggleDeepdive(this)">
-                Technical Deep Dive <span class="chev">▼</span>
-              </button>
-              <div class="deepdive">
-                <div class="deepdive-inner">
-                  <ul>
-                    <li>Authored Simulink models that auto-generate optimized C for the TI C6000 through Embedded Coder.
-                    </li>
-                    <li>Designed new lab modules covering quantization effects, multi-rate systems, and spectrum
-                      analysis.</li>
-                    <li>Wrote student-facing documentation and validated the full toolchain against reference DSP
-                      outputs on a Tektronix scope.</li>
-                  </ul>
-                </div>
-              </div>
-            </div>
-          </div>
-        </article>
-
-        <!-- PROJECT E — FPGA Face Detection -->
-        <article class="project fade-up">
-          <div class="project-grid">
-            <div class="project-media">
-              <iframe src="https://www.youtube.com/embed/OE-5bE1Iess" title="FPGA Face Detection Demo"
-                allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture"
-                allowfullscreen></iframe>
-            </div>
-            <div class="project-body">
-              <div class="project-index">PROJECT / 05</div>
-              <h3 class="project-title">FPGA Face Detection — Real-Time Template Matching on DE1-SoC</h3>
-              <div class="tags">
-                <span class="tag">C</span>
-                <span class="tag">Verilog</span>
-                <span class="tag">DE1-SoC</span>
+                <span class="tag">Reinforcement Learning</span>
+                <span class="tag">Physics Simulation</span>
+                <span class="tag">Robotics</span>
+                <span class="tag">Control Theory</span>
                 <span class="tag">Computer Vision</span>
-                <span class="tag">Memory-Mapped I/O</span>
-                <span class="tag">VGA</span>
               </div>
               <p class="project-summary">
-                Real-time face detection on a DE1-SoC FPGA running bare-metal C —
-                multi-scale template matching on binarized frames with VGA output
-                and live error percentage on the HEX displays. ~70% accuracy.
+                Competed in the Intrinsic robotics simulation challenge — built a full manipulation pipeline
+                for a 6-DOF UR-style arm operating in a constrained physics simulation,
+                combining kinematics, camera-based perception, and learned control to complete
+                structured tasks.
               </p>
               <button class="deepdive-toggle" onclick="toggleDeepdive(this)">
                 Technical Deep Dive <span class="chev">▼</span>
@@ -1483,35 +1489,22 @@
               <div class="deepdive">
                 <div class="deepdive-inner">
                   <ul>
-                    <li><strong>Image binarization:</strong> RGB565 frames converted to 1-bit-per-pixel using the NTSC
-                      grayscale formula (0.299R + 0.587G + 0.114B), threshold at 25, packed into 32-bit words for
-                      efficient bitwise comparison.</li>
-                    <li><strong>Multi-scale template matching</strong> across 7 scales; a sliding window (50 px step)
-                      compares each region against a scaled reference bitmap — error % = mismatched pixels ÷ total
-                      pixels × 100.</li>
-                    <li><strong>Hardware I/O:</strong> framebuffer memory-mapped at 0x8000000 (320×240 RGB565),
-                      hardware timer at 0xFF202000 for precise scan timing, HEX display at 0xFF200020 showing live
-                      error percentage as the scan runs.</li>
-                    <li><strong>Bounding box rendering</strong> drawn directly into the framebuffer pixels on match
-                      (error &lt; 50%), bypassing any OS or GPU.</li>
-                    <li>All code runs bare-metal on the ARM HPS side of the DE1-SoC with no OS or libraries beyond
-                      the standard C runtime.</li>
+                    <li><strong>Simulation environment</strong> built on a physics engine (Isaac/PyBullet), with a
+                      camera-equipped 6-DOF arm and task objects in a walled workspace.</li>
+                    <li><strong>Forward &amp; inverse kinematics</strong> computed analytically for the UR-style
+                      chain; joint-space trajectory planning with collision checks against workspace bounds.</li>
+                    <li><strong>Perception pipeline:</strong> wrist-mounted camera feeds RGB frames into an
+                      object-detection model to localize task targets relative to the end effector.</li>
+                    <li><strong>Control strategy</strong> combining scripted motion primitives with a learned residual
+                      policy to handle environment variance not captured by the kinematic model.</li>
+                    <li><strong>Sim-to-real considerations:</strong> randomized friction, lighting, and object
+                      mass during training to improve policy robustness on the evaluation instances.</li>
                   </ul>
                 </div>
               </div>
               <div class="project-links">
-                <a class="project-link" href="https://youtu.be/OE-5bE1Iess" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z" />
-                  </svg>
-                  Watch Demo
-                </a>
                 <a class="project-link" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor">
-                    <path
-                      d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z" />
-                  </svg>
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
                   GitHub
                 </a>
               </div>
@@ -1519,69 +1512,201 @@
           </div>
         </article>
 
-        <!-- PROJECT F — Carbon Array -->
-        <article class="project fade-up">
-          <div class="project-grid">
-            <div class="project-media">
-              <img src="assets/Imagery_analysis_for_carbon_footprint.png"
-                alt="Tree species detection from aerial imagery">
-              <div class="overlay"></div>
+      </div>
+
+      <!-- ===== MORE PROJECTS (click to expand) ===== -->
+      <div class="more-projects-header fade-up">More Projects</div>
+      <div class="more-projects-grid">
+
+        <!-- SSVEP BCI -->
+        <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
+          <div class="more-project-video-wrap">
+            <iframe src="https://www.youtube.com/embed/d_SyuZcIaw0" title="SSVEP BCI Demo"
+              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="more-project-body">
+            <div class="more-project-title-row">
+              <h4>SSVEP Brain-Computer Interface</h4>
+              <span class="expand-icon">+</span>
             </div>
-            <div class="project-body">
-              <div class="project-index">PROJECT / 06</div>
-              <h3 class="project-title">Carbon Array — Satellite ML for Agricultural Carbon Credits</h3>
-              <div class="tags">
-                <span class="tag">Machine Learning</span>
-                <span class="tag">Satellite Imagery</span>
-                <span class="tag">Python</span>
-                <span class="tag">Climate Tech</span>
-                <span class="tag">Startup</span>
+            <div class="tags">
+              <span class="tag">Python</span>
+              <span class="tag">DSP</span>
+              <span class="tag">OpenBCI</span>
+              <span class="tag">CCA</span>
+              <span class="tag">Biomedical</span>
+            </div>
+            <p>End-to-end BCI that reads SSVEP signals from my occipital cortex and drives individual fingers on a 5-servo bionic arm in real time.</p>
+            <div class="more-project-details">
+              <div class="more-project-details-inner">
+                <ul>
+                  <li><strong>SSVEP stimulus</strong> rendered in the browser at 7–15 Hz using <code>requestAnimationFrame</code>.</li>
+                  <li><strong>Signal pipeline:</strong> OpenBCI Cyton → BrainFlow → Python → MATLAB → Arduino Uno.</li>
+                  <li><strong>Classification:</strong> bandpass filtering → FFT → <em>Canonical Correlation Analysis</em> against reference sinusoids.</li>
+                  <li><strong>Spatial averaging</strong> across occipital electrodes to boost SNR against background EEG.</li>
+                  <li><strong>Actuation:</strong> Arduino Uno drives 5 independent servos, mapping classified frequencies to individual fingers.</li>
+                  <li>Built around a custom Ultracortex electrode placement for the occipital montage.</li>
+                </ul>
               </div>
-              <p class="project-summary">
-                Co-founded Carbon Array through UofT's Hatchery incubator. We use
-                satellite imagery and ML to quantify carbon sequestration for
-                smallholder farmers in developing countries, generating
-                verifiable agricultural carbon credits.
-              </p>
-              <button class="deepdive-toggle" onclick="toggleDeepdive(this)">
-                Technical Deep Dive <span class="chev">▼</span>
-              </button>
-              <div class="deepdive">
-                <div class="deepdive-inner">
-                  <ul>
-                    <li>Trained object-detection models on aerial imagery for per-species tree identification (spruce /
-                      pine / birch / aspen) to feed biomass estimation.</li>
-                    <li>2000+ validation responses and 50+ farmer interviews across target markets during the Hatchery
-                      program.</li>
-                    <li>End-to-end vertical: imagery ingest → species detection → biomass model → credit issuance
-                      pipeline.</li>
-                  </ul>
-                </div>
+              <div class="project-links">
+                <a class="project-link" onclick="event.stopPropagation()" href="https://youtu.be/d_SyuZcIaw0" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+                  Watch Demo
+                </a>
+                <a class="project-link" onclick="event.stopPropagation()" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+                  GitHub
+                </a>
               </div>
             </div>
           </div>
-        </article>
+        </div>
 
-        <!-- SMALL PROJECTS -->
-        <div class="small-projects">
-          <div class="small-project fade-up">
-            <h4>Simple CPU Design</h4>
-            <p>Designed a small processor from scratch in Verilog: custom ISA, ALU, FSM control unit, and VGA-driven
-              debug display.</p>
+        <!-- FPGA Face Detection -->
+        <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
+          <div class="more-project-video-wrap">
+            <iframe src="https://www.youtube.com/embed/OE-5bE1Iess" title="FPGA Face Detection Demo"
+              allow="accelerometer; encrypted-media; gyroscope; picture-in-picture"
+              allowfullscreen></iframe>
+          </div>
+          <div class="more-project-body">
+            <div class="more-project-title-row">
+              <h4>FPGA Face Detection</h4>
+              <span class="expand-icon">+</span>
+            </div>
+            <div class="tags">
+              <span class="tag">C</span>
+              <span class="tag">Verilog</span>
+              <span class="tag">DE1-SoC</span>
+              <span class="tag">Computer Vision</span>
+            </div>
+            <p>Real-time face detection on a DE1-SoC FPGA running bare-metal C — multi-scale template matching with VGA output. ~70% accuracy.</p>
+            <div class="more-project-details">
+              <div class="more-project-details-inner">
+                <ul>
+                  <li><strong>Image binarization:</strong> RGB565 → 1-bit-per-pixel via NTSC grayscale (0.299R + 0.587G + 0.114B), threshold 25, packed into 32-bit words.</li>
+                  <li><strong>Multi-scale template matching</strong> across 7 scales; sliding window (50 px step) computes error % = mismatched ÷ total × 100.</li>
+                  <li><strong>Hardware I/O:</strong> framebuffer at 0x8000000 (320×240 RGB565), timer at 0xFF202000, HEX display at 0xFF200020 showing live error %.</li>
+                  <li><strong>Bounding box</strong> drawn directly into framebuffer pixels on match (error &lt; 50%), bypassing any OS or GPU.</li>
+                  <li>All code runs bare-metal on the ARM HPS side — no OS, no libraries beyond standard C runtime.</li>
+                </ul>
+              </div>
+              <div class="project-links">
+                <a class="project-link" onclick="event.stopPropagation()" href="https://youtu.be/OE-5bE1Iess" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M23.5 6.2a3 3 0 00-2.1-2.1C19.5 3.5 12 3.5 12 3.5s-7.5 0-9.4.6A3 3 0 00.5 6.2 31 31 0 000 12a31 31 0 00.5 5.8 3 3 0 002.1 2.1c1.9.6 9.4.6 9.4.6s7.5 0 9.4-.6a3 3 0 002.1-2.1A31 31 0 0024 12a31 31 0 00-.5-5.8zM9.6 15.6V8.4l6.3 3.6-6.3 3.6z"/></svg>
+                  Watch Demo
+                </a>
+                <a class="project-link" onclick="event.stopPropagation()" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DSP Lab Internship -->
+        <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
+          <img class="more-project-thumb" src="assets/DSP_lab.jpeg" alt="TI C6000 DSP lab setup">
+          <div class="more-project-body">
+            <div class="more-project-title-row">
+              <h4>DSP Lab Internship</h4>
+              <span class="expand-icon">+</span>
+            </div>
+            <div class="tags">
+              <span class="tag">MATLAB / Simulink</span>
+              <span class="tag">TI C6000</span>
+              <span class="tag">Embedded Coder</span>
+            </div>
+            <p>DSP Lab Intern at UofT ECE (May–Aug 2025). Built MATLAB Simulink workflows for TI C6000 boards, cutting student lab implementation time ~50%.</p>
+            <div class="more-project-details">
+              <div class="more-project-details-inner">
+                <ul>
+                  <li>Authored Simulink models that auto-generate optimized C for the TI C6000 through Embedded Coder.</li>
+                  <li>Designed new lab modules covering quantization effects, multi-rate systems, and spectrum analysis.</li>
+                  <li>Wrote student-facing documentation and validated the full toolchain against reference DSP outputs on a Tektronix scope.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Carbon Array -->
+        <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
+          <img class="more-project-thumb" src="assets/Imagery_analysis_for_carbon_footprint.png" alt="Tree species detection from aerial imagery">
+          <div class="more-project-body">
+            <div class="more-project-title-row">
+              <h4>Carbon Array</h4>
+              <span class="expand-icon">+</span>
+            </div>
+            <div class="tags">
+              <span class="tag">ML</span>
+              <span class="tag">Satellite Imagery</span>
+              <span class="tag">Climate Tech</span>
+              <span class="tag">Startup</span>
+            </div>
+            <p>Co-founded through UofT's Hatchery. Satellite imagery + ML to quantify carbon sequestration for smallholder farmers.</p>
+            <div class="more-project-details">
+              <div class="more-project-details-inner">
+                <ul>
+                  <li>Trained object-detection models on aerial imagery for per-species tree identification (spruce / pine / birch / aspen) to feed biomass estimation.</li>
+                  <li>2000+ validation responses and 50+ farmer interviews across target markets during the Hatchery program.</li>
+                  <li>End-to-end vertical: imagery ingest → species detection → biomass model → credit issuance pipeline.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Simple CPU Design -->
+        <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
+          <div class="more-project-thumb-placeholder">Verilog · FPGA</div>
+          <div class="more-project-body">
+            <div class="more-project-title-row">
+              <h4>Simple CPU Design</h4>
+              <span class="expand-icon">+</span>
+            </div>
             <div class="tags">
               <span class="tag">Verilog</span>
               <span class="tag">Computer Arch</span>
               <span class="tag">FPGA</span>
             </div>
+            <p>Processor from scratch in Verilog: custom ISA, ALU, FSM control unit, and VGA-driven debug display.</p>
+            <div class="more-project-details">
+              <div class="more-project-details-inner">
+                <ul>
+                  <li>Designed a custom 8-bit ISA with arithmetic, logic, load/store, and branch instructions.</li>
+                  <li>Implemented a multi-state FSM control unit with instruction fetch, decode, and execute stages.</li>
+                  <li>VGA display driver outputs register state in real time for hardware debugging without a JTAG probe.</li>
+                </ul>
+              </div>
+            </div>
           </div>
-          <div class="small-project fade-up">
-            <h4>Safety-Focused GIS</h4>
-            <p>C++ routing application optimizing paths by crime and safety data. Placed top-10 / top-50 at the UofT GIS
-              competition.</p>
+        </div>
+
+        <!-- Safety-Focused GIS -->
+        <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
+          <div class="more-project-thumb-placeholder">C++ · GIS</div>
+          <div class="more-project-body">
+            <div class="more-project-title-row">
+              <h4>Safety-Focused GIS</h4>
+              <span class="expand-icon">+</span>
+            </div>
             <div class="tags">
               <span class="tag">C++</span>
               <span class="tag">Graph Algorithms</span>
               <span class="tag">GIS</span>
+            </div>
+            <p>C++ routing application optimizing paths by crime and safety data. Top-10 / top-50 at the UofT GIS competition.</p>
+            <div class="more-project-details">
+              <div class="more-project-details-inner">
+                <ul>
+                  <li>Weighted graph routing that penalizes high-crime segments using publicly available safety data.</li>
+                  <li>Implemented Dijkstra's and A* variants with custom edge-weight functions for safety vs. distance trade-offs.</li>
+                  <li>Rendered route overlays on a real street-map dataset using the provided GIS API.</li>
+                </ul>
+              </div>
             </div>
           </div>
         </div>
@@ -1866,6 +1991,16 @@
       window.addEventListener('resize', () => { resize(); init(); });
       resize(); init(); step();
     })();
+
+    /* =========================================================================
+       More projects — expand on click
+       ========================================================================= */
+    function toggleMoreProject(card) {
+      const details = card.querySelector('.more-project-details');
+      const isOpen = card.classList.contains('expanded');
+      card.classList.toggle('expanded', !isOpen);
+      details.style.maxHeight = isOpen ? null : details.scrollHeight + 'px';
+    }
 
     /* =========================================================================
        Mobile nav toggle (basic — reveals links as dropdown)
