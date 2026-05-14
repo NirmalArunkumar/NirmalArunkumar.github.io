@@ -1463,25 +1463,26 @@
         <article class="project fade-up">
           <div class="project-grid">
             <div class="project-media">
-              <img src="assets/intrinsic_challenge.jpeg" alt="Intrinsic Challenge — Robotic Arm Simulation">
+              <img src="assets/insertion_demo.gif" alt="UR5e SFP cable insertion demo">
               <div class="overlay"></div>
             </div>
             <div class="project-body">
               <div class="project-index">PROJECT / 03</div>
-              <h3 class="project-title">Intrinsic Challenge — Sim-to-Real Robotic Arm Manipulation</h3>
+              <h3 class="project-title">SFP Cable Insertion — UR5e with 3-Camera Visual Servo Policy</h3>
               <div class="tags">
                 <span class="tag">Python</span>
-                <span class="tag">Reinforcement Learning</span>
-                <span class="tag">Physics Simulation</span>
-                <span class="tag">Robotics</span>
-                <span class="tag">Control Theory</span>
+                <span class="tag">ROS 2</span>
+                <span class="tag">UR5e</span>
+                <span class="tag">Visual Servoing</span>
+                <span class="tag">Stereo Triangulation</span>
                 <span class="tag">Computer Vision</span>
+                <span class="tag">Control Theory</span>
               </div>
               <p class="project-summary">
-                Competed in the Intrinsic robotics simulation challenge — built a full manipulation pipeline
-                for a 6-DOF UR-style arm operating in a constrained physics simulation,
-                combining kinematics, camera-based perception, and learned control to complete
-                structured tasks.
+                Built a closed-loop insertion policy for the Intrinsic AI Challenge — scored 230.
+                A UR5e uses left, centre, and right cameras to triangulate the 3D port position
+                without assuming depth, then visually servos the plug to within 2 mm before
+                descending with live XY updates every 10 mm of travel.
               </p>
               <button class="deepdive-toggle" onclick="toggleDeepdive(this)">
                 Technical Deep Dive <span class="chev">▼</span>
@@ -1489,16 +1490,27 @@
               <div class="deepdive">
                 <div class="deepdive-inner">
                   <ul>
-                    <li><strong>Simulation environment</strong> built on a physics engine (Isaac/PyBullet), with a
-                      camera-equipped 6-DOF arm and task objects in a walled workspace.</li>
-                    <li><strong>Forward &amp; inverse kinematics</strong> computed analytically for the UR-style
-                      chain; joint-space trajectory planning with collision checks against workspace bounds.</li>
-                    <li><strong>Perception pipeline:</strong> wrist-mounted camera feeds RGB frames into an
-                      object-detection model to localize task targets relative to the end effector.</li>
-                    <li><strong>Control strategy</strong> combining scripted motion primitives with a learned residual
-                      policy to handle environment variance not captured by the kinematic model.</li>
-                    <li><strong>Sim-to-real considerations:</strong> randomized friction, lighting, and object
-                      mass during training to improve policy robustness on the evaluation instances.</li>
+                    <li><strong>Multi-camera ray triangulation:</strong> each camera back-projects its
+                      detected port pixel into a 3D ray. Solves
+                      <code>P = lstsq(Σ(I−ddᵀ), Σ(I−ddᵀ)O)</code> for the point minimising
+                      perpendicular distance to all three rays — depth is geometric, not a
+                      hard-coded offset. Outlier cameras whose ray disagrees strongly are dropped.</li>
+                    <li><strong>Port orientation from contour:</strong> <code>cv2.minAreaRect</code>
+                      on the detected SFP contour gives the in-plane slot angle, rotating the
+                      wrist to match the rectangular opening before approach.</li>
+                    <li><strong>Smooth approach:</strong> smoothstep interpolation (t²(3−2t))
+                      to the triangulated hover position. Better Z accuracy means less positional
+                      error entering the alignment phase vs. the single-camera baseline.</li>
+                    <li><strong>Closed-loop visual servo:</strong> up to 25 iterations, each
+                      re-detecting across all 3 cameras, re-triangulating, and commanding a
+                      correction. Exits as soon as XY error &lt; 2 mm — saving time toward the
+                      duration score. Replaces the original fixed 8-step blind integrator.</li>
+                    <li><strong>Descent with live XY updates:</strong> every 10 mm of descent
+                      the cameras re-estimate port XY (Z is owned by the descent counter).
+                      Force monitoring: 2 N delta triggers spiral, 40 N hard stop.</li>
+                    <li><strong>Tighter spiral:</strong> max radius reduced 20 mm → 15 mm due
+                      to improved upstream accuracy. Post-insertion 5 s sleep removed entirely
+                      (was for dev video capture — pure lost duration points in evaluation).</li>
                   </ul>
                 </div>
               </div>
