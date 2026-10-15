@@ -988,31 +988,105 @@
       margin-bottom: 0;
     }
 
-    .more-project-gallery {
-      display: grid;
-      grid-template-columns: repeat(3, 1fr);
-      gap: 8px;
-      margin: 4px 0 16px;
+    /* ========================================================================
+   Project media carousel (swipeable multi-image gallery, visible without
+   opening the deep dive)
+   ======================================================================== */
+    .project-carousel {
+      position: absolute;
+      inset: 0;
     }
 
-    .more-project-gallery a {
-      display: block;
-      border-radius: 6px;
-      overflow: hidden;
-      border: 1px solid var(--border);
-      line-height: 0;
+    .carousel-track {
+      display: flex;
+      height: 100%;
+      overflow-x: auto;
+      scroll-snap-type: x mandatory;
+      scroll-behavior: smooth;
+      -webkit-overflow-scrolling: touch;
+      scrollbar-width: none;
     }
 
-    .more-project-gallery img {
+    .carousel-track::-webkit-scrollbar {
+      display: none;
+    }
+
+    .carousel-slide {
+      flex: 0 0 100%;
+      scroll-snap-align: start;
+      height: 100%;
+    }
+
+    .carousel-slide img {
       width: 100%;
-      height: 70px;
+      height: 100%;
       object-fit: cover;
       display: block;
-      transition: transform .3s;
+      position: static;
+      inset: auto;
     }
 
-    .more-project-gallery a:hover img {
-      transform: scale(1.06);
+    .carousel-arrow {
+      position: absolute;
+      top: 50%;
+      transform: translateY(-50%);
+      width: 38px;
+      height: 38px;
+      border-radius: 50%;
+      border: 1px solid var(--border-strong);
+      background: rgba(10, 10, 15, 0.55);
+      backdrop-filter: blur(6px);
+      -webkit-backdrop-filter: blur(6px);
+      color: #fff;
+      font-size: 20px;
+      line-height: 1;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      z-index: 3;
+      transition: background .2s, border-color .2s, transform .2s;
+      padding: 0;
+    }
+
+    .carousel-arrow:hover {
+      background: rgba(10, 10, 15, 0.85);
+      border-color: var(--cyan);
+      transform: translateY(-50%) scale(1.06);
+    }
+
+    .carousel-arrow.prev {
+      left: 12px;
+    }
+
+    .carousel-arrow.next {
+      right: 12px;
+    }
+
+    .carousel-dots {
+      position: absolute;
+      bottom: 14px;
+      left: 50%;
+      transform: translateX(-50%);
+      display: flex;
+      gap: 8px;
+      z-index: 3;
+    }
+
+    .carousel-dot {
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.35);
+      cursor: pointer;
+      transition: background .2s, transform .2s;
+      border: 0;
+      padding: 0;
+    }
+
+    .carousel-dot.active {
+      background: var(--cyan);
+      transform: scale(1.3);
     }
 
     .status-badge {
@@ -1397,8 +1471,22 @@
         <article class="project fade-up">
           <div class="project-grid">
             <div class="project-media">
-              <img src="assets/hex_board_render.png" alt="H-EX Board KiCad 3D render">
-              <div class="overlay"></div>
+              <div class="project-carousel">
+                <div class="carousel-track">
+                  <div class="carousel-slide"><img src="assets/hex_board_render.png" alt="H-EX Board KiCad 3D render"></div>
+                  <div class="carousel-slide"><img src="assets/hex_board_schematic_power.png" alt="Power input, buck converters and USB hub schematic"></div>
+                  <div class="carousel-slide"><img src="assets/hex_board_schematic_usb_rf.png" alt="USB-A ports, RF chain and ESP32 schematic"></div>
+                  <div class="carousel-slide"><img src="assets/hex_board_layout.png" alt="H-EX Board routed PCB layout with RF antenna net highlighted"></div>
+                </div>
+                <button class="carousel-arrow prev" aria-label="Previous image" onclick="event.stopPropagation()">&#8249;</button>
+                <button class="carousel-arrow next" aria-label="Next image" onclick="event.stopPropagation()">&#8250;</button>
+                <div class="carousel-dots">
+                  <button class="carousel-dot active" aria-label="Slide 1" onclick="event.stopPropagation()"></button>
+                  <button class="carousel-dot" aria-label="Slide 2" onclick="event.stopPropagation()"></button>
+                  <button class="carousel-dot" aria-label="Slide 3" onclick="event.stopPropagation()"></button>
+                  <button class="carousel-dot" aria-label="Slide 4" onclick="event.stopPropagation()"></button>
+                </div>
+              </div>
             </div>
             <div class="project-body">
               <div class="project-index">PROJECT / 01</div>
@@ -1421,17 +1509,6 @@
               </button>
               <div class="deepdive">
                 <div class="deepdive-inner">
-                  <div class="more-project-gallery">
-                    <a href="assets/hex_board_render.png" target="_blank" rel="noopener">
-                      <img src="assets/hex_board_render.png" alt="H-EX Board 3D render">
-                    </a>
-                    <a href="assets/hex_board_schematic_power.png" target="_blank" rel="noopener">
-                      <img src="assets/hex_board_schematic_power.png" alt="Power input, buck converters and USB hub schematic">
-                    </a>
-                    <a href="assets/hex_board_schematic_usb_rf.png" target="_blank" rel="noopener">
-                      <img src="assets/hex_board_schematic_usb_rf.png" alt="USB-A ports, RF chain and ESP32 schematic">
-                    </a>
-                  </div>
                   <ul>
                     <li><strong>Why:</strong> recruiters kept flagging "more hardware experience" — instead of three small boards, one board that forces switching power, high-speed digital, and RF to coexist on a 2-layer stackup.</li>
                     <li><strong>Power:</strong> two TPS563200 synchronous bucks (650 kHz) run in parallel off 12 V (not cascaded) for independent 5 V / 3.3 V rails at ~90% efficiency each; DC-bias-derated capacitors, PTC fuse + reverse-polarity FET + TVS input protection.</li>
@@ -2105,6 +2182,41 @@
       window.addEventListener('resize', () => { resize(); init(); });
       resize(); init(); step();
     })();
+
+    /* =========================================================================
+       Project media carousels (swipeable, visible without opening deep dive)
+       ========================================================================= */
+    document.querySelectorAll('.project-carousel').forEach(carousel => {
+      const track = carousel.querySelector('.carousel-track');
+      const slides = carousel.querySelectorAll('.carousel-slide');
+      const dots = carousel.querySelectorAll('.carousel-dot');
+      const prevBtn = carousel.querySelector('.carousel-arrow.prev');
+      const nextBtn = carousel.querySelector('.carousel-arrow.next');
+
+      function currentIndex() {
+        return Math.round(track.scrollLeft / track.clientWidth);
+      }
+      function goTo(i) {
+        i = Math.max(0, Math.min(slides.length - 1, i));
+        track.scrollTo({ left: track.clientWidth * i, behavior: 'smooth' });
+      }
+      function syncDots() {
+        const idx = currentIndex();
+        dots.forEach((d, i) => d.classList.toggle('active', i === idx));
+      }
+
+      prevBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); goTo(currentIndex() - 1); });
+      nextBtn.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); goTo(currentIndex() + 1); });
+      dots.forEach((d, i) => d.addEventListener('click', (e) => { e.preventDefault(); e.stopPropagation(); goTo(i); }));
+
+      let scrollTimer;
+      track.addEventListener('scroll', () => {
+        clearTimeout(scrollTimer);
+        scrollTimer = setTimeout(syncDots, 80);
+      }, { passive: true });
+
+      window.addEventListener('resize', () => goTo(currentIndex()));
+    });
 
     /* =========================================================================
        More projects — expand on click
