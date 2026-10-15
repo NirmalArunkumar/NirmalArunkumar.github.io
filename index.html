@@ -1393,7 +1393,66 @@
       <!-- ===== FEATURED PROJECTS (top 3) ===== -->
       <div class="projects-wrap">
 
-        <!-- PROJECT 01 — CaP-Y (6-DOF Arm) -->
+        <!-- PROJECT 01 — H-EX Board -->
+        <article class="project fade-up">
+          <div class="project-grid">
+            <div class="project-media">
+              <img src="assets/hex_board_render.png" alt="H-EX Board KiCad 3D render">
+              <div class="overlay"></div>
+            </div>
+            <div class="project-body">
+              <div class="project-index">PROJECT / 01</div>
+              <h3 class="project-title">H-EX Board — Power, High-Speed USB 2.0 &amp; RF on One 2-Layer PCB</h3>
+              <div class="tags">
+                <span class="tag">KiCad</span>
+                <span class="tag">PCB Design</span>
+                <span class="tag">Power Electronics</span>
+                <span class="tag">High-Speed USB 2.0</span>
+                <span class="tag">RF / Antenna Design</span>
+                <span class="status-badge">Designed — Not Yet Fabricated</span>
+              </div>
+              <p class="project-summary">
+                A 2-layer PCB that forces the three hardest parts of hardware design onto one board: switching
+                power, 480 Mb/s USB 2.0 differential routing, and a 2.45 GHz patch antenna designed from scratch.
+                Built after recruiters kept telling me I needed more hardware experience.
+              </p>
+              <button class="deepdive-toggle" onclick="toggleDeepdive(this)">
+                Technical Deep Dive <span class="chev">▼</span>
+              </button>
+              <div class="deepdive">
+                <div class="deepdive-inner">
+                  <div class="more-project-gallery">
+                    <a href="assets/hex_board_render.png" target="_blank" rel="noopener">
+                      <img src="assets/hex_board_render.png" alt="H-EX Board 3D render">
+                    </a>
+                    <a href="assets/hex_board_schematic_power.png" target="_blank" rel="noopener">
+                      <img src="assets/hex_board_schematic_power.png" alt="Power input, buck converters and USB hub schematic">
+                    </a>
+                    <a href="assets/hex_board_schematic_usb_rf.png" target="_blank" rel="noopener">
+                      <img src="assets/hex_board_schematic_usb_rf.png" alt="USB-A ports, RF chain and ESP32 schematic">
+                    </a>
+                  </div>
+                  <ul>
+                    <li><strong>Why:</strong> recruiters kept flagging "more hardware experience" — instead of three small boards, one board that forces switching power, high-speed digital, and RF to coexist on a 2-layer stackup.</li>
+                    <li><strong>Power:</strong> two TPS563200 synchronous bucks (650 kHz) run in parallel off 12 V (not cascaded) for independent 5 V / 3.3 V rails at ~90% efficiency each; DC-bias-derated capacitors, PTC fuse + reverse-polarity FET + TVS input protection.</li>
+                    <li><strong>High-speed USB 2.0 (480 Mb/s):</strong> FE1.1S hub into 3× USB-A with TPS2051B current-limited switches and ESD arrays; 90&ohm; differential pairs verified at 90.4&ohm; with a Python 2-D field-solver script; custom KiCad DRC rules (&le;0.15 mm intra-pair skew) and layout-driven pin swapping to avoid any crossed pairs on 2 layers.</li>
+                    <li><strong>RF:</strong> a 2.45 GHz rectangular patch antenna (28.49 &times; 36.89 mm) derived from transmission-line-model equations, matched to 50&ohm; through a quarter-wave transformer on a grounded coplanar waveguide feed — with DNP &pi;-network footprints left in for post-fab tuning with a NanoVNA.</li>
+                    <li><strong>ESP32 subsystem:</strong> CH340C USB-UART with an auto-program circuit (DTR/RTS &rarr; EN/IO0), so flashing needs no button presses.</li>
+                    <li><strong>Status, honestly:</strong> schematic clean (0 ERC errors), fully routed and 3D-reviewed in KiCad — but not yet fabricated or tested. No measured efficiency, antenna performance, or USB bring-up data exists yet; next steps are Gerbers, fab, and bring-up with a NanoVNA.</li>
+                  </ul>
+                </div>
+              </div>
+              <div class="project-links">
+                <a class="project-link" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+                  GitHub
+                </a>
+              </div>
+            </div>
+          </div>
+        </article>
+
+        <!-- PROJECT 02 — CaP-Y (6-DOF Arm) -->
         <article class="project fade-up">
           <div class="project-grid">
             <div class="project-media">
@@ -1402,7 +1461,7 @@
                 allowfullscreen></iframe>
             </div>
             <div class="project-body">
-              <div class="project-index">PROJECT / 01</div>
+              <div class="project-index">PROJECT / 02</div>
               <h3 class="project-title">CaP-Y — A Broke-Hobbyist Port of Code-as-Policies to a 6-DOF Arm</h3>
               <div class="tags">
                 <span class="tag">Python</span>
@@ -1453,7 +1512,7 @@
           </div>
         </article>
 
-        <!-- PROJECT 02 — Meltybrain -->
+        <!-- PROJECT 03 — Meltybrain -->
         <article class="project fade-up">
           <div class="project-grid">
             <div class="project-media">
@@ -1462,7 +1521,7 @@
                 allowfullscreen></iframe>
             </div>
             <div class="project-body">
-              <div class="project-index">PROJECT / 02</div>
+              <div class="project-index">PROJECT / 03</div>
               <h3 class="project-title">Meltybrain Full-Body Spinner — Combat Robotics</h3>
               <div class="tags">
                 <span class="tag">Embedded C</span>
@@ -1507,115 +1566,59 @@
           </div>
         </article>
 
-        <!-- PROJECT 03 — Intrinsic Challenge -->
-        <article class="project fade-up">
-          <div class="project-grid">
-            <div class="project-media">
-              <img src="assets/insertion_demo.gif" alt="UR5e SFP cable insertion demo">
-              <div class="overlay"></div>
-            </div>
-            <div class="project-body">
-              <div class="project-index">PROJECT / 03</div>
-              <h3 class="project-title">SFP Cable Insertion — UR5e with 3-Camera Visual Servo Policy</h3>
-              <div class="tags">
-                <span class="tag">Python</span>
-                <span class="tag">ROS 2</span>
-                <span class="tag">UR5e</span>
-                <span class="tag">Visual Servoing</span>
-                <span class="tag">Stereo Triangulation</span>
-                <span class="tag">Computer Vision</span>
-                <span class="tag">Control Theory</span>
-              </div>
-              <p class="project-summary">
-                Built a closed-loop insertion policy for the Intrinsic AI Challenge — scored 230.
-                A UR5e uses left, centre, and right cameras to triangulate the 3D port position
-                without assuming depth, then visually servos the plug to within 2 mm before
-                descending with live XY updates every 10 mm of travel.
-              </p>
-              <button class="deepdive-toggle" onclick="toggleDeepdive(this)">
-                Technical Deep Dive <span class="chev">▼</span>
-              </button>
-              <div class="deepdive">
-                <div class="deepdive-inner">
-                  <ul>
-                    <li><strong>Multi-camera ray triangulation:</strong> each camera back-projects its
-                      detected port pixel into a 3D ray. Solves
-                      <code>P = lstsq(Σ(I−ddᵀ), Σ(I−ddᵀ)O)</code> for the point minimising
-                      perpendicular distance to all three rays — depth is geometric, not a
-                      hard-coded offset. Outlier cameras whose ray disagrees strongly are dropped.</li>
-                    <li><strong>Port orientation from contour:</strong> <code>cv2.minAreaRect</code>
-                      on the detected SFP contour gives the in-plane slot angle, rotating the
-                      wrist to match the rectangular opening before approach.</li>
-                    <li><strong>Smooth approach:</strong> smoothstep interpolation (t²(3−2t))
-                      to the triangulated hover position. Better Z accuracy means less positional
-                      error entering the alignment phase vs. the single-camera baseline.</li>
-                    <li><strong>Closed-loop visual servo:</strong> up to 25 iterations, each
-                      re-detecting across all 3 cameras, re-triangulating, and commanding a
-                      correction. Exits as soon as XY error &lt; 2 mm — saving time toward the
-                      duration score. Replaces the original fixed 8-step blind integrator.</li>
-                    <li><strong>Descent with live XY updates:</strong> every 10 mm of descent
-                      the cameras re-estimate port XY (Z is owned by the descent counter).
-                      Force monitoring: 2 N delta triggers spiral, 40 N hard stop.</li>
-                    <li><strong>Tighter spiral:</strong> max radius reduced 20 mm → 15 mm due
-                      to improved upstream accuracy. Post-insertion 5 s sleep removed entirely
-                      (was for dev video capture — pure lost duration points in evaluation).</li>
-                  </ul>
-                </div>
-              </div>
-              <div class="project-links">
-                <a class="project-link" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
-                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
-                  GitHub
-                </a>
-              </div>
-            </div>
-          </div>
-        </article>
-
       </div>
 
       <!-- ===== MORE PROJECTS (click to expand) ===== -->
       <div class="more-projects-header fade-up">More Projects</div>
       <div class="more-projects-grid">
 
-        <!-- H-EX Board -->
+        <!-- SFP Cable Insertion (Intrinsic AI Challenge) -->
         <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
-          <img class="more-project-thumb" src="assets/hex_board_render.png" alt="H-EX Board KiCad 3D render">
+          <img class="more-project-thumb" src="assets/insertion_demo.gif" alt="UR5e SFP cable insertion demo">
           <div class="more-project-body">
             <div class="more-project-title-row">
-              <h4>H-EX Board</h4>
+              <h4>SFP Cable Insertion — UR5e</h4>
               <span class="expand-icon">+</span>
             </div>
             <div class="tags">
-              <span class="tag">KiCad</span>
-              <span class="tag">PCB Design</span>
-              <span class="tag">Power Electronics</span>
-              <span class="tag">High-Speed USB 2.0</span>
-              <span class="tag">RF / Antenna Design</span>
-              <span class="status-badge">Designed — Not Yet Fabricated</span>
+              <span class="tag">Python</span>
+              <span class="tag">ROS 2</span>
+              <span class="tag">UR5e</span>
+              <span class="tag">Visual Servoing</span>
+              <span class="tag">Stereo Triangulation</span>
             </div>
-            <p>A 2-layer PCB that forces the three hardest parts of hardware design onto one board: switching power, 480 Mb/s USB 2.0 differential routing, and a 2.45 GHz patch antenna designed from scratch.</p>
+            <p>Closed-loop insertion policy for the Intrinsic AI Challenge — scored 230. 3-camera triangulation locates the port in 3D without depth, then visually servos the plug in before a monitored descent.</p>
             <div class="more-project-details">
               <div class="more-project-details-inner">
-                <div class="more-project-gallery">
-                  <a href="assets/hex_board_render.png" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                    <img src="assets/hex_board_render.png" alt="H-EX Board 3D render">
-                  </a>
-                  <a href="assets/hex_board_schematic_power.png" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                    <img src="assets/hex_board_schematic_power.png" alt="Power input, buck converters and USB hub schematic">
-                  </a>
-                  <a href="assets/hex_board_schematic_usb_rf.png" target="_blank" rel="noopener" onclick="event.stopPropagation()">
-                    <img src="assets/hex_board_schematic_usb_rf.png" alt="USB-A ports, RF chain and ESP32 schematic">
-                  </a>
-                </div>
                 <ul>
-                  <li><strong>Why:</strong> recruiters kept flagging "more hardware experience" — instead of three small boards, one board that forces switching power, high-speed digital, and RF to coexist on a 2-layer stackup.</li>
-                  <li><strong>Power:</strong> two TPS563200 synchronous bucks (650 kHz) run in parallel off 12 V (not cascaded) for independent 5 V / 3.3 V rails at ~90% efficiency each; DC-bias-derated capacitors, PTC fuse + reverse-polarity FET + TVS input protection.</li>
-                  <li><strong>High-speed USB 2.0 (480 Mb/s):</strong> FE1.1S hub into 3× USB-A with TPS2051B current-limited switches and ESD arrays; 90&ohm; differential pairs verified at 90.4&ohm; with a Python 2-D field-solver script; custom KiCad DRC rules (&le;0.15 mm intra-pair skew) and layout-driven pin swapping to avoid any crossed pairs on 2 layers.</li>
-                  <li><strong>RF:</strong> a 2.45 GHz rectangular patch antenna (28.49 &times; 36.89 mm) derived from transmission-line-model equations, matched to 50&ohm; through a quarter-wave transformer on a grounded coplanar waveguide feed — with DNP &pi;-network footprints left in for post-fab tuning with a NanoVNA.</li>
-                  <li><strong>ESP32 subsystem:</strong> CH340C USB-UART with an auto-program circuit (DTR/RTS &rarr; EN/IO0), so flashing needs no button presses.</li>
-                  <li><strong>Status, honestly:</strong> schematic clean (0 ERC errors), fully routed and 3D-reviewed in KiCad — but not yet fabricated or tested. No measured efficiency, antenna performance, or USB bring-up data exists yet; next steps are Gerbers, fab, and bring-up with a NanoVNA.</li>
+                  <li><strong>Multi-camera ray triangulation:</strong> each camera back-projects its
+                    detected port pixel into a 3D ray. Solves
+                    <code>P = lstsq(Σ(I−ddᵀ), Σ(I−ddᵀ)O)</code> for the point minimising
+                    perpendicular distance to all three rays — depth is geometric, not a
+                    hard-coded offset. Outlier cameras whose ray disagrees strongly are dropped.</li>
+                  <li><strong>Port orientation from contour:</strong> <code>cv2.minAreaRect</code>
+                    on the detected SFP contour gives the in-plane slot angle, rotating the
+                    wrist to match the rectangular opening before approach.</li>
+                  <li><strong>Smooth approach:</strong> smoothstep interpolation (t²(3−2t))
+                    to the triangulated hover position. Better Z accuracy means less positional
+                    error entering the alignment phase vs. the single-camera baseline.</li>
+                  <li><strong>Closed-loop visual servo:</strong> up to 25 iterations, each
+                    re-detecting across all 3 cameras, re-triangulating, and commanding a
+                    correction. Exits as soon as XY error &lt; 2 mm — saving time toward the
+                    duration score. Replaces the original fixed 8-step blind integrator.</li>
+                  <li><strong>Descent with live XY updates:</strong> every 10 mm of descent
+                    the cameras re-estimate port XY (Z is owned by the descent counter).
+                    Force monitoring: 2 N delta triggers spiral, 40 N hard stop.</li>
+                  <li><strong>Tighter spiral:</strong> max radius reduced 20 mm → 15 mm due
+                    to improved upstream accuracy. Post-insertion 5 s sleep removed entirely
+                    (was for dev video capture — pure lost duration points in evaluation).</li>
                 </ul>
+              </div>
+              <div class="project-links">
+                <a class="project-link" onclick="event.stopPropagation()" href="https://github.com/NirmalArunkumar" target="_blank" rel="noopener">
+                  <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 .5C5.73.5.5 5.73.5 12a11.5 11.5 0 007.86 10.92c.58.1.79-.25.79-.55v-2c-3.2.7-3.88-1.37-3.88-1.37-.52-1.33-1.27-1.68-1.27-1.68-1.04-.71.08-.7.08-.7 1.15.08 1.76 1.18 1.76 1.18 1.03 1.76 2.7 1.25 3.36.96.1-.74.4-1.25.73-1.54-2.56-.29-5.25-1.28-5.25-5.7 0-1.26.45-2.29 1.18-3.1-.12-.29-.51-1.46.11-3.05 0 0 .97-.31 3.18 1.18a11 11 0 015.79 0c2.2-1.49 3.17-1.18 3.17-1.18.63 1.59.23 2.76.11 3.05.74.81 1.18 1.84 1.18 3.1 0 4.43-2.7 5.4-5.27 5.69.41.35.78 1.05.78 2.12v3.14c0 .3.21.66.8.55A11.5 11.5 0 0023.5 12C23.5 5.73 18.27.5 12 .5z"/></svg>
+                  GitHub
+                </a>
               </div>
             </div>
           </div>
