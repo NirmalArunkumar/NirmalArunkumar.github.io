@@ -988,6 +988,43 @@
       margin-bottom: 0;
     }
 
+    .more-project-gallery {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 8px;
+      margin: 4px 0 16px;
+    }
+
+    .more-project-gallery a {
+      display: block;
+      border-radius: 6px;
+      overflow: hidden;
+      border: 1px solid var(--border);
+      line-height: 0;
+    }
+
+    .more-project-gallery img {
+      width: 100%;
+      height: 70px;
+      object-fit: cover;
+      display: block;
+      transition: transform .3s;
+    }
+
+    .more-project-gallery a:hover img {
+      transform: scale(1.06);
+    }
+
+    .status-badge {
+      font-family: var(--font-mono);
+      font-size: 11px;
+      padding: 6px 12px;
+      border-radius: 100px;
+      background: rgba(234, 179, 8, 0.08);
+      color: #eab308;
+      border: 1px solid rgba(234, 179, 8, 0.3);
+    }
+
     /* ========================================================================
    Skills
    ======================================================================== */
@@ -1541,6 +1578,49 @@
       <div class="more-projects-header fade-up">More Projects</div>
       <div class="more-projects-grid">
 
+        <!-- H-EX Board -->
+        <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
+          <img class="more-project-thumb" src="assets/hex_board_render.png" alt="H-EX Board KiCad 3D render">
+          <div class="more-project-body">
+            <div class="more-project-title-row">
+              <h4>H-EX Board</h4>
+              <span class="expand-icon">+</span>
+            </div>
+            <div class="tags">
+              <span class="tag">KiCad</span>
+              <span class="tag">PCB Design</span>
+              <span class="tag">Power Electronics</span>
+              <span class="tag">High-Speed USB 2.0</span>
+              <span class="tag">RF / Antenna Design</span>
+              <span class="status-badge">Designed — Not Yet Fabricated</span>
+            </div>
+            <p>A 2-layer PCB that forces the three hardest parts of hardware design onto one board: switching power, 480 Mb/s USB 2.0 differential routing, and a 2.45 GHz patch antenna designed from scratch.</p>
+            <div class="more-project-details">
+              <div class="more-project-details-inner">
+                <div class="more-project-gallery">
+                  <a href="assets/hex_board_render.png" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                    <img src="assets/hex_board_render.png" alt="H-EX Board 3D render">
+                  </a>
+                  <a href="assets/hex_board_schematic_power.png" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                    <img src="assets/hex_board_schematic_power.png" alt="Power input, buck converters and USB hub schematic">
+                  </a>
+                  <a href="assets/hex_board_schematic_usb_rf.png" target="_blank" rel="noopener" onclick="event.stopPropagation()">
+                    <img src="assets/hex_board_schematic_usb_rf.png" alt="USB-A ports, RF chain and ESP32 schematic">
+                  </a>
+                </div>
+                <ul>
+                  <li><strong>Why:</strong> recruiters kept flagging "more hardware experience" — instead of three small boards, one board that forces switching power, high-speed digital, and RF to coexist on a 2-layer stackup.</li>
+                  <li><strong>Power:</strong> two TPS563200 synchronous bucks (650 kHz) run in parallel off 12 V (not cascaded) for independent 5 V / 3.3 V rails at ~90% efficiency each; DC-bias-derated capacitors, PTC fuse + reverse-polarity FET + TVS input protection.</li>
+                  <li><strong>High-speed USB 2.0 (480 Mb/s):</strong> FE1.1S hub into 3× USB-A with TPS2051B current-limited switches and ESD arrays; 90&ohm; differential pairs verified at 90.4&ohm; with a Python 2-D field-solver script; custom KiCad DRC rules (&le;0.15 mm intra-pair skew) and layout-driven pin swapping to avoid any crossed pairs on 2 layers.</li>
+                  <li><strong>RF:</strong> a 2.45 GHz rectangular patch antenna (28.49 &times; 36.89 mm) derived from transmission-line-model equations, matched to 50&ohm; through a quarter-wave transformer on a grounded coplanar waveguide feed — with DNP &pi;-network footprints left in for post-fab tuning with a NanoVNA.</li>
+                  <li><strong>ESP32 subsystem:</strong> CH340C USB-UART with an auto-program circuit (DTR/RTS &rarr; EN/IO0), so flashing needs no button presses.</li>
+                  <li><strong>Status, honestly:</strong> schematic clean (0 ERC errors), fully routed and 3D-reviewed in KiCad — but not yet fabricated or tested. No measured efficiency, antenna performance, or USB bring-up data exists yet; next steps are Gerbers, fab, and bring-up with a NanoVNA.</li>
+                </ul>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- SSVEP BCI -->
         <div class="more-project-card fade-up" onclick="toggleMoreProject(this)">
           <div class="more-project-video-wrap">
@@ -1811,9 +1891,9 @@
         <div class="timeline-item fade-up">
           <div class="timeline-date">2026 — Present</div>
           <h3>J Squared Technologies</h3>
-          <div class="timeline-role">Defense Intern — Ottawa</div>
+          <div class="timeline-role">Hardware Intern — Ottawa</div>
           <p>
-            Engineering internship in the defense sector, based in Ottawa.
+            Hardware engineering internship in the defense sector, based in Ottawa.
           </p>
         </div>
         <div class="timeline-item fade-up">
